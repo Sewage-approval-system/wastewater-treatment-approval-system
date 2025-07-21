@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>污水治理智能审批系统 - AI驱动的环保合规解决方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 100%;
+            width: auto;
+            background: transparent;
+            transition: transform 0.3s ease;
+            mix-blend-mode: multiply;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+            /* 尝试移除白色背景 */
+            -webkit-mask-composite: exclude;
+            mask-composite: exclude;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.1);
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover .logo-text {
+            transform: translateX(5px);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #2c5aa0;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 100px;
+            text-align: center;
+            color: #f5f5f7;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-content {
+            animation: fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            background: linear-gradient(135deg, #f5f5f7 0%, #d1d1d6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #2c5aa0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            padding: 40px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .feature-icon svg {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon svg {
+            transform: scale(1.2);
+            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
+        }
+        
+        .feature-card:hover .feature-icon svg path,
+        .feature-card:hover .feature-icon svg circle {
+            stroke: #764ba2;
+            stroke-width: 2.5;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c5aa0;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .pricing-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group select option {
+            background: #ffffff;
+            color: #333;
+            border: none;
+            padding: 10px;
+        }
+        
+        .form-group select option:checked,
+        .form-group select option:hover {
+            background: #667eea;
+            color: #ffffff;
+        }
+        
+        /* Trial Section */
+        .trial {
+            padding: 80px 0;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        
+        .trial-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .trial h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c5aa0;
+        }
+        
+        .trial-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .trial-feature {
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 60px 0 30px;
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+        
+        .footer-section p,
+        .footer-section li {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #3498db;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <img src="icon.png" alt="智慧审批">
+                    <span class="logo-text">智能审批科技</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#features">产品特色</a></li>
+                    <li><a href="#pricing">获取报价</a></li>
+                    <li><a href="#trial">免费试用</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>污水治理智能审批系统</h1>
+                <p>AI驱动的环保合规解决方案，通过智能化审批流程管理，提升污水治理项目审批效率，确保环保法规合规性</p>
+                <div class="hero-buttons">
+                    <a href="#trial" class="btn btn-primary">免费试用</a>
+                    <a href="#pricing" class="btn btn-secondary">获取报价</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">产品核心优势</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#667eea" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="#667eea" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#667eea" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>AI智能审批</h3>
+                    <p>利用人工智能和NLP技术，自动匹配法规数据库，智能化处理审批流程，大幅提升审批效率</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3V21H21" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 9L12 6L16 10L20 6" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>可视化流程</h3>
+                    <p>提供直观的审批流程图和智能风险评估功能，帮助审批人员高效判断项目合规性风险</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#667eea" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>法规合规</h3>
+                    <p>整合最新环保法规数据库，确保所有审批项目符合国家环保法规要求，降低合规风险</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>高效便捷</h3>
+                    <p>显著减少审批时间，降低行政成本，推动环保行业数字化转型</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11" cy="11" r="8" stroke="#667eea" stroke-width="2"/>
+                            <path d="M21 21L16.65 16.65" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>透明监管</h3>
+                    <p>提升审批流程透明度，减少人工干预，确保审批过程公正、公开、公平</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="#667eea" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="6" stroke="#667eea" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="2" stroke="#667eea" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>精准适配</h3>
+                    <p>适用于政府部门、园区运营方及重点排污企业，满足不同场景的审批需求</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">获取专属报价</h2>
+            <div class="pricing-form">
+                <form id="quoteForm">
+                    <div class="form-group">
+                        <label for="companyName">企业名称 *</label>
+                        <input type="text" id="companyName" name="companyName" required placeholder="请输入您的企业名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactName">联系人姓名 *</label>
+                        <input type="text" id="contactName" name="contactName" required placeholder="请输入联系人姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">联系电话 *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="请输入11位手机号码，如：13800138000">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">企业邮箱</label>
+                        <input type="email" id="email" name="email" placeholder="请输入企业邮箱（选填）">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyType">企业类型 *</label>
+                        <select id="companyType" name="companyType" required>
+                            <option value="">请选择企业类型</option>
+                            <option value="government">政府部门</option>
+                            <option value="park">园区运营方</option>
+                            <option value="enterprise">重点排污企业</option>
+                            <option value="consultant">环保咨询公司</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userCount">预计用户数量</label>
+                        <select id="userCount" name="userCount">
+                            <option value="">请选择用户规模</option>
+                            <option value="1-10">1-10人</option>
+                            <option value="11-50">11-50人</option>
+                            <option value="51-100">51-100人</option>
+                            <option value="100+">100人以上</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="requirements">特殊需求</label>
+                        <textarea id="requirements" name="requirements" rows="4" placeholder="请描述您的特殊需求或定制化要求"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">获取专属报价</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trial Section -->
+    <section id="trial" class="trial">
+        <div class="container">
+            <div class="trial-content">
+                <h2>免费试用体验</h2>
+                <p>立即体验污水治理智能审批系统的强大功能，零成本感受AI智能审批的便捷与高效</p>
+                
+                <div class="trial-features">
+                    <div class="trial-feature">
+                        <h3>🎁 30天免费试用</h3>
+                        <p>完整功能体验，无任何限制</p>
+                    </div>
+                    <div class="trial-feature">
+                        <h3>👨‍💼 专业技术支持</h3>
+                        <p>7x24小时技术支持服务</p>
+                    </div>
+                    <div class="trial-feature">
+                        <h3>📚 培训资料提供</h3>
+                        <p>完整的使用培训和操作指南</p>
+                    </div>
+                </div>
+                
+                <a href="#" class="btn btn-primary" onclick="startTrial()" style="font-size: 1.2rem; padding: 20px 40px;">立即开始免费试用</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>产品信息</h3>
+                    <ul>
+                        <li><a href="#features">产品特色</a></li>
+                        <li><a href="#pricing">价格方案</a></li>
+                        <li><a href="#trial">免费试用</a></li>
+                        <li><a href="#">技术文档</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>服务支持</h3>
+                    <ul>
+                        <li><a href="#">在线客服</a></li>
+                        <li><a href="#">技术支持</a></li>
+                        <li><a href="#">培训服务</a></li>
+                        <li><a href="#">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>📞 服务热线：19905980186</p>
+                    <p>📧 邮箱：24721042@bjtu.edu.cn</p>
+                    <p>🏢 地址：北京交通大学威海校区</p>
+                </div>
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>致力于通过AI技术推动环保行业数字化转型，为生态文明建设贡献力量。</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 污水治理智能审批系统. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // API配置 - 动态检测部署环境
+        const API_BASE_URL = (() => {
+            // 如果是本地开发环境
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return 'http://localhost:3001/api';
+            }
+            // 如果是生产环境，使用相对路径或环境变量
+            return window.location.protocol + '//' + window.location.hostname + ':3001/api';
+        })();
+        
+        // 显示加载状态
+        function showLoading(button) {
+            button.disabled = true;
+            button.innerHTML = '<span style="opacity:0.7">提交中...</span>';
+        }
+        
+        // 隐藏加载状态
+        function hideLoading(button, originalText) {
+            button.disabled = false;
+            button.innerHTML = originalText;
+        }
+        
+        // 显示消息提示
+        function showMessage(message, type = 'success') {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 400px;
+                text-align: center;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+            `;
+            messageDiv.textContent = message;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+        
+        // 报价表单提交处理
+        document.getElementById('quoteForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = this.querySelector('button[type="submit"]') || 
+                               this.querySelector('.btn-primary');
+            const originalText = submitButton ? submitButton.innerHTML : '';
+            
+            try {
+                if (submitButton) showLoading(submitButton);
+                
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                
+                const response = await fetch(`${API_BASE_URL}/quotes`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('感谢您的询价！我们将在2个工作日内联系您提供专属报价方案。');
+                    this.reset();
+                } else {
+                    // 显示详细错误信息
+                    let errorMessage = result.error || '提交失败，请稍后重试';
+                    
+                    if (result.details && result.details.length > 0) {
+                        const detailMessages = result.details.map(detail => detail.message).join('；');
+                        errorMessage = `${errorMessage}：${detailMessages}`;
+                    }
+                    
+                    showMessage(errorMessage, 'error');
+                }
+                
+            } catch (error) {
+                console.error('提交报价申请失败:', error);
+                showMessage('网络错误，请检查网络连接后重试', 'error');
+            } finally {
+                if (submitButton) hideLoading(submitButton, originalText);
+            }
+        });
+        
+        // 试用功能
+        async function startTrial() {
+            // 创建试用申请模态框
+            const modal = createTrialModal();
+            document.body.appendChild(modal);
+            
+            // 显示模态框
+            modal.style.display = 'flex';
+            setTimeout(() => modal.style.opacity = '1', 10);
+        }
+        
+        // 创建试用申请模态框
+        function createTrialModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 500px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    position: relative;
+                ">
+                    <button id="closeModal" style="
+                        position: absolute;
+                        top: 15px;
+                        right: 15px;
+                        background: none;
+                        border: none;
+                        font-size: 24px;
+                        cursor: pointer;
+                        color: #999;
+                    ">&times;</button>
+                    
+                    <h2 style="color: #333; margin-bottom: 20px; text-align: center;">申请免费试用</h2>
+                    
+                    <form id="trialForm">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">企业名称 *</label>
+                            <input type="text" name="companyName" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                font-size: 16px;
+                                box-sizing: border-box;
+                            " placeholder="请输入企业名称">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">联系人姓名 *</label>
+                            <input type="text" name="contactName" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                font-size: 16px;
+                                box-sizing: border-box;
+                            " placeholder="请输入联系人姓名">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">联系电话 *</label>
+                            <input type="tel" name="phone" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                font-size: 16px;
+                                box-sizing: border-box;
+                            " placeholder="请输入手机号码">
+                        </div>
+                        
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 500;">企业邮箱 *</label>
+                            <input type="email" name="email" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                font-size: 16px;
+                                box-sizing: border-box;
+                            " placeholder="请输入企业邮箱">
+                        </div>
+                        
+                        <button type="submit" style="
+                            width: 100%;
+                            padding: 15px;
+                            background: linear-gradient(45deg, #4CAF50, #45a049);
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: transform 0.2s ease;
+                        ">申请30天免费试用</button>
+                    </form>
+                </div>
+            `;
+            
+            // 关闭模态框事件
+            modal.querySelector('#closeModal').addEventListener('click', () => {
+                modal.style.opacity = '0';
+                setTimeout(() => modal.remove(), 300);
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.opacity = '0';
+                    setTimeout(() => modal.remove(), 300);
+                }
+            });
+            
+            // 试用表单提交
+            modal.querySelector('#trialForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                try {
+                    showLoading(submitButton);
+                    
+                    const formData = new FormData(this);
+                    const data = Object.fromEntries(formData);
+                    
+                    const response = await fetch(`${API_BASE_URL}/trials`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('试用申请成功！试用账户信息已发送到您的邮箱，请查收。');
+                        modal.style.opacity = '0';
+                        setTimeout(() => modal.remove(), 300);
+                    } else {
+                        showMessage(result.error || '申请失败，请稍后重试', 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('提交试用申请失败:', error);
+                    showMessage('网络错误，请检查网络连接后重试', 'error');
+                } finally {
+                    hideLoading(submitButton, originalText);
+                }
+            });
+            
+            return modal;
+        }
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // 滚动动画效果
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // 观察所有功能卡片
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+        
+        // 添加鼠标跟踪效果
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+        
+        // 添加按钮点击波纹效果
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
